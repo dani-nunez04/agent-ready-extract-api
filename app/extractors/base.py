@@ -19,6 +19,8 @@ class ExtractedLink:
 @dataclass(frozen=True, slots=True)
 class ExtractorOutput:
     title: str | None = None
+    description: str | None = None
+    headings: list[str] | None = None
     text: str | None = None
     links: list[ExtractedLink] | None = None
 

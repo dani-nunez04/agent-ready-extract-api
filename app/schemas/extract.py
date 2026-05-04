@@ -37,6 +37,8 @@ class ExtractResult(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     title: str | None = Field(default=None, description="Best-effort document title.")
+    description: str | None = Field(default=None, description="Best-effort meta description.")
+    headings: list[str] | None = Field(default=None, description="Best-effort headings (h1-h6).")
     text: str | None = Field(default=None, description="Best-effort main text.")
     links: list[ExtractedLink] | None = Field(default=None, description="Best-effort extracted links.")
 

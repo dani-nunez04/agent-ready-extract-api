@@ -7,7 +7,14 @@ from app.extractors.base import (
     ExtractorOutput,
 )
 from app.schemas.extract import ExtractOptions
-from app.utils.html import extract_text, extract_title, iter_links, parse_html
+from app.utils.html import (
+    extract_headings,
+    extract_meta_description,
+    extract_text,
+    extract_title,
+    iter_links,
+    parse_html,
+)
 
 
 class HtmlContentExtractor(Extractor):
@@ -28,11 +35,13 @@ class HtmlContentExtractor(Extractor):
         soup = parse_html(data.html)
 
         title: str | None = extract_title(soup) if options.include_title else None
+        description: str | None = extract_meta_description(soup)
+        headings: list[str] | None = extract_headings(soup)
         text: str | None = extract_text(soup) if options.include_text else None
 
         links: list[ExtractedLink] | None = None
         if options.include_links:
             links = [ExtractedLink(href=href, text=txt) for (href, txt) in iter_links(soup, base_url=data.url)]
 
-        return ExtractorOutput(title=title, text=text, links=links)
+        return ExtractorOutput(title=title, description=description, headings=headings, text=text, links=links)
 

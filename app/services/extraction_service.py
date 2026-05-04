@@ -53,6 +53,8 @@ class ExtractionService:
 
         result = ExtractResult(
             title=out.title,
+            description=out.description,
+            headings=out.headings,
             text=out.text,
             links=links,
         )
