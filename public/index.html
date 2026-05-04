@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>agent-ready-extract-api</title>
+    <meta
+      name="description"
+      content="Extract clean content and metadata from public URLs as JSON (FastAPI on Vercel)."
+    />
+    <style>
+      :root { color-scheme: light dark; }
+      body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+      .wrap { max-width: 920px; margin: 0 auto; padding: 48px 20px; }
+      .card { border: 1px solid rgba(127,127,127,.25); border-radius: 12px; padding: 18px 16px; }
+      .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      @media (min-width: 820px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+      h1 { margin: 0 0 8px 0; font-size: 28px; }
+      p { margin: 10px 0; line-height: 1.5; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+      pre { overflow: auto; padding: 14px; border-radius: 10px; background: rgba(127,127,127,.12); }
+      .muted { opacity: .8; }
+      a { color: inherit; }
+      .links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>agent-ready-extract-api</h1>
+      <p class="muted">Extract clean content and metadata from public URLs as JSON.</p>
+
+      <div class="links">
+        <a href="/docs">Swagger UI</a>
+        <a href="/openapi.json">OpenAPI</a>
+        <a href="/api/v1/health">Health</a>
+      </div>
+
+      <h2>Use cases</h2>
+      <div class="grid">
+        <div class="card">
+          <strong>Monitoring</strong>
+          <p>Track changes on public pages by hashing extracted text.</p>
+        </div>
+        <div class="card">
+          <strong>Indexing</strong>
+          <p>Convert messy HTML into clean text + headings for search or RAG.</p>
+        </div>
+        <div class="card">
+          <strong>Research</strong>
+          <p>Quickly pull title/description/links from documentation and blogs.</p>
+        </div>
+      </div>
+
+      <h2>Example request</h2>
+      <pre><code>POST /api/v1/extract
+Content-Type: application/json
+
+{
+  "url": "https://example.com",
+  "options": { "include_text": true, "include_title": true, "include_links": true }
+}</code></pre>
+
+      <h2>Example response (shape)</h2>
+      <pre><code>{
+  "url": "https://example.com",
+  "fetch": { "fetched_at": "...", "final_url": "...", "status_code": 200, "content_type": "text/html; charset=utf-8" },
+  "result": { "title": "...", "description": "...", "headings": ["..."], "text": "...", "links": [{"href":"...","text":"..."}] }
+}</code></pre>
+    </div>
+  </body>
+</html>
+
