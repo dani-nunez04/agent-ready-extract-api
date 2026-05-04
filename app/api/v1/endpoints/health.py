@@ -3,12 +3,13 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from app.core.config import get_settings
+from app.schemas.common import APIStatus
 
 router = APIRouter()
 
 
-@router.get("/health")
-def health() -> dict[str, str]:
+@router.get("/health", response_model=APIStatus, summary="Health check")
+def health() -> APIStatus:
     settings = get_settings()
-    return {"status": "ok", "version": settings.api_version}
+    return APIStatus(status="ok", version=settings.api_version)
 

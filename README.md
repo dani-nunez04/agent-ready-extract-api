@@ -1,6 +1,17 @@
 # agent-ready-extract-api
 
-Backend API en **Python 3.12 + FastAPI** para extracción legítima y segura de contenido público (MVP).
+API para **extraer contenido limpio y metadatos** de páginas web públicas en JSON (FastAPI en Vercel).
+
+## What this API does
+
+- Fetches a **public URL** and returns: **title**, **description**, **headings**, **clean text**, and **normalized links**
+- No logins, no CAPTCHAs, no proxies, no evasion
+
+## Use cases
+
+- **RAG / indexing**: convert HTML into clean text + headings
+- **Monitoring**: hash extracted text to detect meaningful changes
+- **Research**: quickly capture title/description/links from docs/blogs
 
 ## Requisitos
 
@@ -44,7 +55,28 @@ Backend API en **Python 3.12 + FastAPI** para extracción legítima y segura de 
 ```json
 {
   "url": "https://example.com",
-  "options": { "include_text": true, "include_title": true, "include_links": false }
+  "options": { "include_text": true, "include_title": true, "include_links": true }
+}
+```
+
+Respuesta (ejemplo de forma):
+
+```json
+{
+  "url": "https://example.com",
+  "fetch": {
+    "fetched_at": "2026-01-01T00:00:00Z",
+    "final_url": "https://example.com",
+    "status_code": 200,
+    "content_type": "text/html; charset=UTF-8"
+  },
+  "result": {
+    "title": "Example Domain",
+    "description": null,
+    "headings": ["Example Domain"],
+    "text": "Example Domain ...",
+    "links": [{ "href": "https://www.iana.org/domains/example", "text": "More information..." }]
+  }
 }
 ```
 
@@ -56,6 +88,11 @@ Limitaciones (serverless) y notas:
 - **Cold starts**: la primera petición puede ser más lenta.
 - **Dependencias nativas**: `lxml` puede fallar si no hay wheel compatible en el entorno (es el riesgo principal).
 - **CORS**: configúralo vía `CORS_ALLOW_ORIGINS` (evita `*` con credenciales).
+
+## Endpoints
+
+- `GET /api/v1/health`
+- `POST /api/v1/extract`
 
 ### Checklist “antes de hacer deploy”
 

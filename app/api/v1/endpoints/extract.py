@@ -23,6 +23,9 @@ async def get_http_client() -> HttpClient:
 @router.post(
     "/extract",
     response_model=ExtractResponse,
+    summary="Extract clean content from a public URL",
+    description="Fetch a public web page and extract basic metadata and clean text. No logins, no CAPTCHAs, no proxies.",
+    operation_id="extractFromUrl",
     responses={
         400: {"model": ErrorResponse},
         422: {"description": "Validation error"},
