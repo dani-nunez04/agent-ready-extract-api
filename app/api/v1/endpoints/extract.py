@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
+from app.api.deps import verify_rapidapi_proxy_secret
 from app.clients.http_client import HttpClient
 from app.core.errors import ExtractionError, UpstreamFetchError
 from app.schemas.common import ErrorResponse
@@ -22,11 +23,13 @@ async def get_http_client() -> HttpClient:
 
 @router.post(
     "/extract",
+    dependencies=[Depends(verify_rapidapi_proxy_secret)],
     response_model=ExtractResponse,
     summary="Extract clean content from a public URL",
     description="Fetch a public web page and extract basic metadata and clean text. No logins, no CAPTCHAs, no proxies.",
     operation_id="extractFromUrl",
     responses={
+        403: {"description": "Forbidden"},
         400: {"model": ErrorResponse},
         422: {"description": "Validation error"},
         502: {"model": ErrorResponse},

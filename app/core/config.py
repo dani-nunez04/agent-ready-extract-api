@@ -26,6 +26,10 @@ class Settings(BaseSettings):
 
     cors_allow_origins: list[str] = Field(default_factory=list, alias="CORS_ALLOW_ORIGINS")
 
+    # RapidAPI gateway/proxy shared secret. When set, protected endpoints can validate
+    # that the request came through RapidAPI rather than being called directly.
+    rapidapi_proxy_secret: str | None = Field(default=None, alias="RAPIDAPI_PROXY_SECRET")
+
     @field_validator("cors_allow_origins", mode="before")
     @classmethod
     def _parse_cors_allow_origins(cls, v: Any) -> list[str]:
